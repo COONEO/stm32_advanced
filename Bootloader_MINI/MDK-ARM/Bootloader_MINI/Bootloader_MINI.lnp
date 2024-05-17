@@ -1,0 +1,27 @@
+--cpu Cortex-M3
+"bootloader_mini\startup_stm32f103xb.o"
+"bootloader_mini\main.o"
+"bootloader_mini\gpio.o"
+"bootloader_mini\usart.o"
+"bootloader_mini\stm32f1xx_it.o"
+"bootloader_mini\stm32f1xx_hal_msp.o"
+"bootloader_mini\stm32f1xx_hal_gpio_ex.o"
+"bootloader_mini\stm32f1xx_hal_tim.o"
+"bootloader_mini\stm32f1xx_hal_tim_ex.o"
+"bootloader_mini\stm32f1xx_hal_uart.o"
+"bootloader_mini\stm32f1xx_hal.o"
+"bootloader_mini\stm32f1xx_hal_rcc.o"
+"bootloader_mini\stm32f1xx_hal_rcc_ex.o"
+"bootloader_mini\stm32f1xx_hal_gpio.o"
+"bootloader_mini\stm32f1xx_hal_dma.o"
+"bootloader_mini\stm32f1xx_hal_cortex.o"
+"bootloader_mini\stm32f1xx_hal_pwr.o"
+"bootloader_mini\stm32f1xx_hal_flash.o"
+"bootloader_mini\stm32f1xx_hal_flash_ex.o"
+"bootloader_mini\stm32f1xx_hal_exti.o"
+"bootloader_mini\system_stm32f1xx.o"
+"bootloader_mini\bootloader.o"
+--strict --scatter "Bootloader_MINI\Bootloader_MINI.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "Bootloader_MINI.map" -o Bootloader_MINI\Bootloader_MINI.axf
