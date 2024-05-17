@@ -34,7 +34,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define MAX_BLOCK_SIZE          ( 1024 )                  //1KB
-#define ETX_APP_START_ADDRESS   0x08005000
+#define ETX_APP_START_ADDRESS   0x08003800
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,8 +44,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-CRC_HandleTypeDef hcrc;
-
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart3;
 
@@ -58,9 +56,8 @@ uint16_t application_write_idx = 0;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_USART1_UART_Init(void);
 static void MX_USART3_UART_Init(void);
-static void MX_CRC_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 static void goto_application( void );
 static void Firmware_Update( void );
@@ -99,11 +96,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USART1_UART_Init();
   MX_USART3_UART_Init();
-  MX_CRC_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  printf("Bootloader v%d:%d Started!!!\n", BL_Version[0], BL_Version[1]);
+//  printf("Bootloader v%d:%d Started!!!\n", BL_Version[0], BL_Version[1]);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -155,32 +151,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-}
-
-/**
-  * @brief CRC Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_CRC_Init(void)
-{
-
-  /* USER CODE BEGIN CRC_Init 0 */
-
-  /* USER CODE END CRC_Init 0 */
-
-  /* USER CODE BEGIN CRC_Init 1 */
-
-  /* USER CODE END CRC_Init 1 */
-  hcrc.Instance = CRC;
-  if (HAL_CRC_Init(&hcrc) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN CRC_Init 2 */
-
-  /* USER CODE END CRC_Init 2 */
-
 }
 
 /**
@@ -277,20 +247,20 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-#ifdef __GNUC__
-  /* With GCC, small printf (option LD Linker->Libraries->Small printf
-     set to 'Yes') calls __io_putchar() */
-int __io_putchar(int ch)
-#else
-int fputc(int ch, FILE *f)
-#endif /* __GNUC__ */
-{
-  /* Place your implementation of fputc here */
-  /* e.g. write a character to the UART3 and Loop until the end of transmission */
-  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+//#ifdef __GNUC__
+//  /* With GCC, small printf (option LD Linker->Libraries->Small printf
+//     set to 'Yes') calls __io_putchar() */
+//int __io_putchar(int ch)
+//#else
+//int fputc(int ch, FILE *f)
+//#endif /* __GNUC__ */
+//{
+//  /* Place your implementation of fputc here */
+//  /* e.g. write a character to the UART3 and Loop until the end of transmission */
+//  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
 
-  return ch;
-}
+//  return ch;
+//}
 
 
 static int UART_Write_Loop( void )
@@ -313,7 +283,7 @@ static int UART_Write_Loop( void )
     if( ( ex == HAL_OK ) && ( rx == 'r' ) )
     {
       //received data
-      printf("Firmware Update Started\r\n");
+//      printf("Firmware Update Started\r\n");
       ret = 1;
       break;
     }
@@ -321,7 +291,7 @@ static int UART_Write_Loop( void )
     if( count == 100 )
     {
       //received nothing
-      printf("No Data Received for Firmware Update\r\n");
+//      printf("No Data Received for Firmware Update\r\n");
       break;
     }
     count++;
@@ -354,7 +324,7 @@ static HAL_StatusTypeDef write_data_to_flash_app( uint8_t *data,
     //No need to erase every time. Erase only the first time.
     if( is_first_block )
     {
-      printf("Erasing the Flash memory...\r\n");
+//      printf("Erasing the Flash memory...\r\n");
       //Erase the Flash
       FLASH_EraseInitTypeDef EraseInitStruct;
       uint32_t SectorError;
@@ -385,7 +355,7 @@ static HAL_StatusTypeDef write_data_to_flash_app( uint8_t *data,
       }
       else
       {
-        printf("Flash Write Error...HALT!!!\r\n");
+//        printf("Flash Write Error...HALT!!!\r\n");
         break;
       }
     }
@@ -432,7 +402,7 @@ static void Firmware_Update(void)
       ex = HAL_UART_Receive(&huart3, &yy, 1, 5000);
       if( ex != HAL_OK )
       {
-        printf("Get application Size error (yy)...HALT!!!\r\n");
+//        printf("Get application Size error (yy)...HALT!!!\r\n");
         break;
       }
 
@@ -441,18 +411,18 @@ static void Firmware_Update(void)
       ex = HAL_UART_Receive(&huart3, &xx, 1, 5000);
       if( ex != HAL_OK )
       {
-        printf("Get application Size error(XX)...HALT!!!\r\n");
+//        printf("Get application Size error(XX)...HALT!!!\r\n");
         break;
       }
 
       application_size = yy | (xx << 8);
-      printf("Application Size = %d bytes\r\n", application_size);
+//      printf("Application Size = %d bytes\r\n", application_size);
 
       while(1)
       {
         if( ( i == MAX_BLOCK_SIZE ) || ( current_app_size >= application_size) )
         {
-          printf("Received Block[%d]\r\n", current_app_size/MAX_BLOCK_SIZE);
+//          printf("Received Block[%d]\r\n", current_app_size/MAX_BLOCK_SIZE);
 
           //write to flash
           ex = write_data_to_flash_app(block, MAX_BLOCK_SIZE, (current_app_size <= MAX_BLOCK_SIZE) );
@@ -479,7 +449,7 @@ static void Firmware_Update(void)
         ex = HAL_UART_Receive(&huart3, &yy, 1, 5000);
         if( ex != HAL_OK )
         {
-          printf("Get application data[index:%d] error (yy)...HALT!!!\r\n", i);
+//          printf("Get application data[index:%d] error (yy)...HALT!!!\r\n", i);
           break;
         }
 
@@ -488,7 +458,7 @@ static void Firmware_Update(void)
         ex = HAL_UART_Receive(&huart3, &xx, 1, 5000);
         if( ex != HAL_OK )
         {
-          printf("Get application data[index:%d] error(XX)...HALT!!!\r\n", i);
+//          printf("Get application data[index:%d] error(XX)...HALT!!!\r\n", i);
           break;
         }
 
@@ -509,7 +479,7 @@ static void Firmware_Update(void)
 
 static void goto_application( void )
 {
-	printf("Gonna Jump to Application...\n");
+//	printf("Gonna Jump to Application...\n");
 	void (*app_reset_handler)(void) = (void*)(*((volatile uint32_t*)(ETX_APP_START_ADDRESS + 4U)));
 
 	if( app_reset_handler == (void*)0xFFFFFFFF )
