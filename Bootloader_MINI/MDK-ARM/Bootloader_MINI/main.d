@@ -30,3 +30,4 @@ bootloader_mini\main.o: ../Core/Inc/usart.h
 bootloader_mini\main.o: ../Core/Inc/gpio.h
 bootloader_mini\main.o: ../CUS/ota_protocol.h
 bootloader_mini\main.o: ../CUS/bootloader.h
+bootloader_mini\main.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdbool.h

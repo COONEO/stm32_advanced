@@ -1,48 +1,38 @@
 #include "ota_protocol.h"
+#include "stm32f1xx_hal_def.h"
 
 OTA_Status OTA_ParsePacket(uint8_t *buffer, OTA_Packet *packet) {
     // Check start marker
-    if ((buffer[0] != (PACKET_START_MARKER >> 8)) || (buffer[1] != (PACKET_START_MARKER & 0xFF))) {
+    if (buffer[0] != 0xAB || buffer[1] != 0xCD) {
         return OTA_ERROR_START_MARKER;
     }
 
-    // Check data length
-    if (buffer[2] != PACKET_DATA_SIZE) {
-        return OTA_ERROR_DATA_LENGTH;
-    }
+    // Data packet number
+    packet->seq_number = buffer[2];
 
     // Copy data
     for (int i = 0; i < PACKET_DATA_SIZE; i++) {
         packet->data[i] = buffer[3 + i];
     }
 
-//    // Calculate checksum
-//    uint8_t checksum = 0;
-//    for (int i = 0; i < PACKET_DATA_SIZE; i++) {
-//        checksum += packet->data[i];
-//    }
+    // Calculate checksum
+    uint8_t checksum = 0;
+    for (int i = 0; i < PACKET_DATA_SIZE; i++) {
+        checksum += packet->data[i];
+    }
 
-//    // Check checksum
-//    if (checksum != buffer[11]) {
+    // Check checksum
+//    if (checksum != buffer[67]) {
 //        return OTA_ERROR_CHECKSUM;
 //    }
 
     // Check end marker
-//    if ((buffer[12] != (PACKET_END_MARKER >> 8)) || (buffer[13] != (PACKET_END_MARKER & 0xFF))) {
-//        return OTA_ERROR_END_MARKER;
-//    }
-    if (buffer[12] != 0xDC || buffer[13] != 0xBA) {
+    if (buffer[68] != 0xDC || buffer[69] != 0xBA) {
         return OTA_ERROR_END_MARKER;
     }
 
-
     return OTA_OK;
 }
-
-
-// Define flash address range
-#define FLASH_START_ADDR 0x08003800
-#define FLASH_END_ADDR   0x08006400
 
 // Define UART handle
 extern UART_HandleTypeDef huart1;
@@ -84,7 +74,11 @@ void EraseFlash(uint32_t start_address, uint32_t length) {
     }
 }
 
-void WriteToFlash(uint32_t address, uint8_t *data, uint32_t size) {
+
+
+HAL_StatusTypeDef WriteToFlash(uint32_t address, uint8_t *data, uint32_t size) {
+    HAL_StatusTypeDef status;
+    
     HAL_FLASH_Unlock();
     
     // 计算要擦除的扇区数量
@@ -97,34 +91,66 @@ void WriteToFlash(uint32_t address, uint8_t *data, uint32_t size) {
     
     // 写入数据到 Flash
     for (uint32_t i = 0; i < size; i += 4) {
-        HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, address + i, *((uint32_t*)(data + i)));
+//        HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, address + i, *((uint32_t*)(data + i)));
+        status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, address + i, *((uint32_t*)(data + i)));
+        if (status != HAL_OK) {
+            HAL_FLASH_Lock();
+            return status;  // Return the failure status if writing fails
+        }
     }
 
+//    HAL_FLASH_Lock();
     HAL_FLASH_Lock();
+    return HAL_OK;  // Return OK if all data written successfully
+
+}
+
+
+bool isFlashWritten(uint32_t startAddress, uint32_t endAddress) {
+    while (startAddress < endAddress) {
+        if (*(volatile uint32_t*)startAddress != 0xFFFFFFFF) {
+            return true;  // 发现非擦除的数据，表示已写入数据
+        }
+        startAddress += 4;  // 增加地址步长，假设Flash字大小为4字节
+    }
+    return false;  // 全部是擦除状态，无数据写入
 }
 
 int yy = 0;
+
+volatile uint32_t received_packets = 0;
+
+#define TOTAL_PACKETS 200  // 假设总共需要200个数据包完成更新  25kb * 1024 / 64
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     // Process received byte
     rx_buffer[rx_index++] = huart->Instance->DR;
 
     // Check if a complete packet has been received
-    if (rx_index >= 14) {
+    if (rx_index >= PACKET_TOTAL_SIZE) {  // 检查是否接收到完整的数据包，每包总长度为70字节
         // Search for start marker
         for (int i = 0; i < rx_index - 1; i++) {
             if (rx_buffer[i] == 0xAB && rx_buffer[i + 1] == 0xCD) {
                 // Found start marker, check if there is enough data for a complete packet
-                if (rx_index - i >= 14) {
+                if (rx_index - i >= PACKET_TOTAL_SIZE) {
                     // Parse received packet
                     OTA_Packet packet;
                     OTA_Status status = OTA_ParsePacket(&rx_buffer[i], &packet);
                     if (status == OTA_OK) {
-                        // Write data to flash
-                        WriteToFlash(FLASH_START_ADDR+ yy *8, packet.data, PACKET_DATA_SIZE);
-                        // Adjust buffer indices
-                        rx_index -= (i + 14);
+//                        // Write data to flash
+//                        WriteToFlash(FLASH_START_ADDR + packet.seq_number * PACKET_DATA_SIZE, packet.data, PACKET_DATA_SIZE);
+//                        // Adjust buffer indices
+//                        
+                        if (WriteToFlash(FLASH_START_ADDR + packet.seq_number * PACKET_DATA_SIZE, packet.data, PACKET_DATA_SIZE) == HAL_OK) {
+                            received_packets++;  // Only increment if write was successful
+                            if (received_packets >= TOTAL_PACKETS) {
+                                goto_application();
+                            }
+                        }
+                        
+                        rx_index -= (i + PACKET_TOTAL_SIZE);
                         for (int j = 0; j < rx_index; j++) {
-                            rx_buffer[j] = rx_buffer[j + i + 14];
+                            rx_buffer[j] = rx_buffer[j + i + PACKET_TOTAL_SIZE];
                         }
                         // Restart parsing from the beginning of the buffer
                         i = -1;
@@ -137,3 +163,4 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     // Re-enable UART receive interrupt
     HAL_UART_Receive_IT(&huart1, &rx_buffer[rx_index], 1);
 }
+

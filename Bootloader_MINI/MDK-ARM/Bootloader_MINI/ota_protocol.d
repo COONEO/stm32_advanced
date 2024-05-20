@@ -28,3 +28,5 @@ bootloader_mini\ota_protocol.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ha
 bootloader_mini\ota_protocol.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 bootloader_mini\ota_protocol.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 bootloader_mini\ota_protocol.o: ../Core/Inc/usart.h
+bootloader_mini\ota_protocol.o: ..\CUS\bootloader.h
+bootloader_mini\ota_protocol.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdbool.h

@@ -57,6 +57,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 int ii = 0;
+uint8_t sss[]="send from app";
 /* USER CODE END 0 */
 
 /**
@@ -99,6 +100,7 @@ int main(void)
   while (1)
   {
       ii++;
+      HAL_UART_Transmit(&huart1,sss,sizeof(sss)/sizeof(uint8_t),200);
       HAL_Delay(200);
     /* USER CODE END WHILE */
 

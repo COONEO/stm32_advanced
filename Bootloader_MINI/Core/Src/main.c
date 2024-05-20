@@ -56,6 +56,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 int kk_flag,kk;
+uint8_t sss[]="send from bootloader";
 /* USER CODE END 0 */
 
 /**
@@ -97,6 +98,15 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+#define FLASH_TTT_ADDR 0x08003822
+   if (isFlashWritten(FLASH_START_ADDR, FLASH_TTT_ADDR)) {
+        goto_application();  // 如果Flash有数据，则尝试跳转
+    } else {
+            ;
+    }
+
+
+
   while (1)
   {
       if(kk_flag==1)
@@ -104,6 +114,7 @@ int main(void)
           goto_application();
       }
       kk++;
+      HAL_UART_Transmit(&huart1,sss,sizeof(sss)/sizeof(uint8_t),200);
       HAL_Delay(200);
     /* USER CODE END WHILE */
 
