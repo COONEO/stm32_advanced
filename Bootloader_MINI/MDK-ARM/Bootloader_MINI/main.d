@@ -28,4 +28,5 @@ bootloader_mini\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 bootloader_mini\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 bootloader_mini\main.o: ../Core/Inc/usart.h
 bootloader_mini\main.o: ../Core/Inc/gpio.h
-bootloader_mini\main.o: ..\CUS\bootloader.h
+bootloader_mini\main.o: ../CUS/ota_protocol.h
+bootloader_mini\main.o: ../CUS/bootloader.h
