@@ -151,5 +151,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 
     // Re-enable UART receive interrupt
     HAL_UART_Receive_IT(&huart1, &rx_buffer[rx_index], 1);
+    HAL_UART_Receive_IT(&huart2, &rx_buffer[rx_index], 1);
 }
 

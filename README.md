@@ -19,9 +19,9 @@ This README document details the partition scheme of Flash and RAM for the STM32
 | 2. Bootloader | 16KB   | 0x0800 4000 - 0x0800 7FFF    | Bootloader            |
 | 3. Check      | 16KB   | 0x0800 8000 - 0x0800 BFFF    | Check Area            |
 | 4. Demo       | 64KB   | 0x0800 C000 - 0x0801 BFFF    | Demo Program          |
-| 5. App        | 128KB  | 0x0802 0000 - 0x0802 FFFF    | Application Program   |
-| 6. App        | 128KB  | 0x0803 0000 - 0x0803 FFFF    | Application Program   |
-| 7. App        | 128KB  | 0x0804 0000 - 0x0804 FFFF    | Application Program   |
+| 5. App        | 128KB  | 0x0802 0000 - 0x0803 FFFF    | Application Program   |
+| 6. App        | 128KB  | 0x0804 0000 - 0x0805 FFFF    | Application Program   |
+| 7. App        | 128KB  | 0x0806 0000 - 0x0807 FFFF    | Application Program   |
 
 ### RAM Partition
 
@@ -49,7 +49,7 @@ This README document details the partition scheme of Flash and RAM for the STM32
 - Function: Used to store demonstration applications or test code.
 
 ### App (Application Program)
-- Address Range: 0x0802 0000 - 0x0804 FFFF
+- Address Range: 0x0802 0000 - 0x0807 FFFF
 - Size: Each block is 128KB, totaling 384KB
 - Function: Mainly used to store user application code.
 

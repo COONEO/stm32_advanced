@@ -56,7 +56,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint8_t sss[]="aabbccddee";
 /* USER CODE END 0 */
 
 /**
@@ -93,7 +93,15 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-    goto_application();
+   // goto_application();
+   
+   
+//   HAL_UART_Transmit(&huart1,sss,sizeof(sss)/sizeof(uint8_t),200);
+//   HAL_UART_Transmit(&huart2,sss,sizeof(sss)/sizeof(uint8_t),200);
+  uint8_t data_buffer[]="a";
+  HAL_UART_Receive_IT(&huart1, data_buffer, 1);
+  HAL_UART_Receive_IT(&huart2, data_buffer, 1);
+   
   /* USER CODE END 2 */
 
   /* Infinite loop */
