@@ -172,7 +172,26 @@ volatile uint32_t received_packets = 0;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     // Process received byte
     rx_buffer[rx_index++] = huart->Instance->DR;
+    
+    if(rx_index>=6)
+    {
+        for (int i = 0; i <= rx_index - 6; i++) {
+            if (rx_buffer[i] == 0xAB && rx_buffer[i + 1] == 0xCC && rx_buffer[i + 4] == 0xCC && rx_buffer[i + 5] == 0xBA) {
+                // Extract address from the command
+                uint32_t address = (rx_buffer[i + 2] << 8) | rx_buffer[i + 3];
+                address = FLASH_START_ADDR + address * PACKET_DATA_SIZE;
 
+                // Erase the sector containing the specified address
+                if (EraseFlashSectors(address, PACKET_DATA_SIZE) == HAL_OK) {
+                    // Handle successful erase (e.g., log the success, etc.)
+                }
+                rx_index =0;
+                memset(rx_buffer, 0, sizeof(rx_buffer));
+                break;
+            }
+        }
+    }
+    
     // Check if a complete packet has been received
     if (rx_index >= PACKET_TOTAL_SIZE) {  // 检查是否接收到完整的数据包，每包总长度为72字节
         // Search for start marker
@@ -210,6 +229,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
             }
         }
     }
+    
+
 
     // Re-enable UART receive interrupt
     HAL_UART_Receive_IT(huart, &rx_buffer[rx_index], 1);
