@@ -816,8 +816,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x65872CC5)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x65872CC5)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x65872CC5)
 F (..\CUS\rl2401.c)(0x66550528)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\CUS-I.\RTE\_Bootloader_MINI-IC:\Users\tianr\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\tianr\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o bootloader_mini\rl2401.o --omf_browse bootloader_mini\rl2401.crf --depend bootloader_mini\rl2401.d)
-F (..\CUS\ota_protocol.c)(0x6655A588)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\CUS-I.\RTE\_Bootloader_MINI-IC:\Users\tianr\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\tianr\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o bootloader_mini\ota_protocol.o --omf_browse bootloader_mini\ota_protocol.crf --depend bootloader_mini\ota_protocol.d)
-I (..\CUS\ota_protocol.h)(0x664AC7C0)
+F (..\CUS\ota_protocol.c)(0x6656A839)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\CUS-I.\RTE\_Bootloader_MINI-IC:\Users\tianr\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\tianr\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o bootloader_mini\ota_protocol.o --omf_browse bootloader_mini\ota_protocol.crf --depend bootloader_mini\ota_protocol.d)
+I (..\CUS\ota_protocol.h)(0x6656A832)
 I (../Core/Inc/main.h)(0x66554835)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65872CC5)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x66554835)
@@ -853,6 +853,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x65872CC5)
 I (../Core/Inc/usart.h)(0x6654EA8F)
 I (..\CUS\bootloader.h)(0x66559B27)
 I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdlib.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
 F (..\CUS\bootloader.c)(0x66558FC1)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\CUS-I.\RTE\_Bootloader_MINI-IC:\Users\tianr\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\tianr\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o bootloader_mini\bootloader.o --omf_browse bootloader_mini\bootloader.crf --depend bootloader_mini\bootloader.d)
 I (..\CUS\bootloader.h)(0x66559B27)
 I (../Core/Inc/main.h)(0x66554835)

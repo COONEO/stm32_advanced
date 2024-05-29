@@ -15,14 +15,14 @@
 #define PACKET_END_MARKER   0xDCBA
 
 // Define flash address range
-#define FLASH_START_ADDR 0x08003800
+#define FLASH_START_ADDR 0x08020000 //0x08020000 APP_MAIN
 #define FLASH_END_ADDR   0x08006400
 
 // Define packet data size
 #define PACKET_DATA_SIZE 64
 
-// 每个数据包的总长度为70字节
-#define PACKET_TOTAL_SIZE 70
+// 每个数据包的总长度为72字节
+#define PACKET_TOTAL_SIZE 72 //4 + 4+ 128 + 4 + 4
 
 // Define OTA status
 typedef enum {
@@ -41,11 +41,14 @@ typedef struct {
 
 // Function prototypes
 OTA_Status OTA_ParsePacket(uint8_t *buffer, OTA_Packet *packet);
-//void WriteToFlash(uint32_t base_address, uint8_t *data, uint32_t seq_number);
+
 HAL_StatusTypeDef WriteToFlash(uint32_t address, uint8_t *data, uint32_t size);
-void EraseFlash(uint32_t start_address, uint32_t length);
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 bool isFlashWritten(uint32_t startAddress, uint32_t endAddress);
 
+HAL_StatusTypeDef EraseFlashSectors(uint32_t startAddress, uint32_t size);
+uint32_t GetSector(uint32_t Address);
+void StartOTAUpdate();
 #endif /* OTA_PROTOCOL_H */
