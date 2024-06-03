@@ -26,7 +26,12 @@ app_mini1\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_crc.h
 app_mini1\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 app_mini1\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 app_mini1\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+app_mini1\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
 app_mini1\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 app_mini1\main.o: ../Core/Inc/crc.h
+app_mini1\main.o: ../Core/Inc/dma.h
+app_mini1\main.o: ../Core/Inc/spi.h
 app_mini1\main.o: ../Core/Inc/usart.h
 app_mini1\main.o: ../Core/Inc/gpio.h
+app_mini1\main.o: ../CUS/1.44inch_SPI_Module_ST7735S.h
+app_mini1\main.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h

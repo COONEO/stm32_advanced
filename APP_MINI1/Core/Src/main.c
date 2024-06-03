@@ -19,12 +19,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "crc.h"
+#include "dma.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "1.44inch_SPI_Module_ST7735S.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -88,10 +90,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CRC_Init();
   MX_USART1_UART_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-
+ 
+    LCD_Init();	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -99,6 +104,25 @@ int main(void)
   while (1)
   {
       ii++;
+      
+
+	LCD_Clear(RED);
+	
+//	Display_ButtonUp(15,8,113,28); //x1,y1,x2,y2
+//	Gui_StrCenter(0,10,BRED,BLUE,"Õº–Œœ‘ æ≤‚ ‘",16,1);
+
+//	Display_ButtonUp(15,38,113,58); //x1,y1,x2,y2
+//	Gui_StrCenter(0,40,BLACK,GRAY0,"¥ø…´ÃÓ≥‰≤‚ ‘",16,1);
+//	
+//	Display_ButtonUp(15,68,113,88); //x1,y1,x2,y2
+//	Gui_StrCenter(0,70,BLUE,GRAY0,"÷–Œƒœ‘ æ≤‚ ‘",16,1);
+
+//	Display_ButtonUp(15,98,113,118); //x1,y1,x2,y2
+//	Gui_StrCenter(16,100,RED,GRAY0,"Õº∆¨œ‘ æ≤‚ ‘",16,1);
+//	delay_ms(1500);
+//	delay_ms(500);
+
+
       HAL_Delay(200);
     /* USER CODE END WHILE */
 

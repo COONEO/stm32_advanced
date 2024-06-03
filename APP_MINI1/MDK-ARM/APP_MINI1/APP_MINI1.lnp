@@ -3,6 +3,8 @@
 "app_mini1\main.o"
 "app_mini1\gpio.o"
 "app_mini1\crc.o"
+"app_mini1\dma.o"
+"app_mini1\spi.o"
 "app_mini1\usart.o"
 "app_mini1\stm32f1xx_it.o"
 "app_mini1\stm32f1xx_hal_msp.o"
@@ -18,10 +20,12 @@
 "app_mini1\stm32f1xx_hal_flash.o"
 "app_mini1\stm32f1xx_hal_flash_ex.o"
 "app_mini1\stm32f1xx_hal_exti.o"
+"app_mini1\stm32f1xx_hal_spi.o"
 "app_mini1\stm32f1xx_hal_tim.o"
 "app_mini1\stm32f1xx_hal_tim_ex.o"
 "app_mini1\stm32f1xx_hal_uart.o"
 "app_mini1\system_stm32f1xx.o"
+"app_mini1\1.44inch_spi_module_st7735s.o"
 --strict --scatter "APP_MINI1\APP_MINI1.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
