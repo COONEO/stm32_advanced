@@ -50,7 +50,6 @@ test_f4_lvgl\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V
 test_f4_lvgl\freertos.o: ../ST7735/lcd.h
 test_f4_lvgl\freertos.o: ../Core/Inc/spi.h
 test_f4_lvgl\freertos.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
-test_f4_lvgl\freertos.o: ../ST7735/test.h
 test_f4_lvgl\freertos.o: C:\Users\tianr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0\lvgl.h
 test_f4_lvgl\freertos.o: C:\Users\tianr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0\src/lv_init.h
 test_f4_lvgl\freertos.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdbool.h
@@ -217,5 +216,6 @@ test_f4_lvgl\freertos.o: C:\Users\tianr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0\
 test_f4_lvgl\freertos.o: C:\Users\tianr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0\src/core/../draw/sw/blend/lv_draw_sw_blend.h
 test_f4_lvgl\freertos.o: C:\Users\tianr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0\src/core/../draw/sw/blend/../lv_draw_sw_mask.h
 test_f4_lvgl\freertos.o: C:\Users\tianr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0\src/core/../stdlib/builtin/lv_tlsf.h
+test_f4_lvgl\freertos.o: ../ST7735/test.h
 test_f4_lvgl\freertos.o: .\RTE\LVGL\lv_port_disp_template.h
 test_f4_lvgl\freertos.o: C:\Users\tianr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0\demos/lv_demos.h

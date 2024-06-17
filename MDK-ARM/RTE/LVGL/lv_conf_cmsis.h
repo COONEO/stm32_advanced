@@ -705,7 +705,7 @@
  *==================*/
 
 /*1: Enable system monitor component*/
-#define LV_USE_SYSMON   1 //0
+#define LV_USE_SYSMON   0 //0
 
 #if LV_USE_SYSMON
 

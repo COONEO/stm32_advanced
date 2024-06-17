@@ -69,15 +69,15 @@ void lv_port_disp_init(void)
 
     /* Example 1
      * One buffer for partial rendering*/
-//    static lv_color_t buf_1_1[MY_DISP_HOR_RES * 10];                          /*A buffer for 10 rows*/
-//    lv_display_set_buffers(disp, buf_1_1, NULL, sizeof(buf_1_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+    static lv_color_t buf_1_1[MY_DISP_HOR_RES * 10];                          /*A buffer for 10 rows*/
+    lv_display_set_buffers(disp, buf_1_1, NULL, sizeof(buf_1_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
 
 //    /* Example 2
 //     * Two buffers for partial rendering
 //     * In flush_cb DMA or similar hardware should be used to update the display in the background.*/
-    static lv_color_t buf_2_1[MY_DISP_HOR_RES * 10];
-    static lv_color_t buf_2_2[MY_DISP_HOR_RES * 10];
-    lv_display_set_buffers(disp, buf_2_1, buf_2_2, sizeof(buf_2_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+//    static lv_color_t buf_2_1[MY_DISP_HOR_RES * 10];
+//    static lv_color_t buf_2_2[MY_DISP_HOR_RES * 10];
+//    lv_display_set_buffers(disp, buf_2_1, buf_2_2, sizeof(buf_2_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
 
 //    /* Example 3
 //     * Two buffers screen sized buffer for double buffering.
@@ -248,35 +248,82 @@ extern volatile uint32_t dma_transfer_complete;
 //    lv_display_flush_ready(disp_drv);
 //}
 
+//uint16_t color;
+//static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * color_p) {
+//    if (disp_flush_enabled) {
+//        // 从color_p中提取颜色值，假定color_p是连续的16位颜色数据
+//        uint16_t color = ((uint16_t)color_p[0] << 8) | (uint16_t)color_p[1];
+
+//        // 调用LCD清屏函数来填充指定区域
+//        LCD_Clear_erea(area->x1, area->y1, area->x2, area->y2, color); // 单颜色 需要修改成多颜色
+//        void LCD_Clear_area_LVGL(int x1, int y1, int x2, int y2, uint16_t *Color)  
+//        // 通知LVGL显示刷新已完成
+//        lv_disp_flush_ready(disp_drv);
+//    }
+//}
+
+
+//static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * color_p) {
+//    if (disp_flush_enabled) {
+//        int32_t width = area->x2 - area->x1 + 1;
+//        int32_t height = area->y2 - area->y1 + 1;
+//        
+//        // 创建一个足够大的数组来存储每个像素的颜色值
+//        uint16_t *color_array = (uint16_t *)malloc(width * height * sizeof(uint16_t));
+//        if (color_array == NULL) {
+//            // 处理内存分配失败的情况
+//            lv_disp_flush_ready(disp_drv);
+//            return;
+//        }
+
+//        // 填充颜色数组
+//        for (int i = 0; i < width * height; i++) {
+//            color_array[i] = ((uint16_t)color_p[i * 2] << 8) | color_p[i * 2 + 1];
+//        }
+
+//        // 使用颜色数组来绘制整个区域
+//        LCD_Clear_area_LVGL(area->x1, area->y1, area->x2, area->y2, color_array);
+
+//        // 清理资源
+//        free(color_array);
+
+//        // 通知LVGL显示刷新已完成
+//        lv_disp_flush_ready(disp_drv);
+//    }
+//}
+
 static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * color_p) {
-    if(disp_flush_enabled) {
-        uint32_t width = area->x2 - area->x1 + 1;
-        uint32_t height = area->y2 - area->y1 + 1;
-        uint32_t row_size = width * 2;
+    if (disp_flush_enabled) {
+//        int32_t width = area->x2 - area->x1 + 1;
+//        int32_t height = area->y2 - area->y1 + 1;
+//        int32_t total_pixels = width * height;
 
-        LCD_SetWindows(area->x1, area->y1, area->x2, area->y2);
+//        // 分配数组来存储颜色数据，每个颜色值是 uint16_t
+//        uint16_t *colors = (uint16_t *)malloc(total_pixels * sizeof(uint16_t));
+//        if (colors == NULL) {
+//            // 如果内存分配失败，应处理失败情况
+//            lv_disp_flush_ready(disp_drv);
+//            return;
+//        }
 
-        for (uint32_t row = 0; row < height; row++) {
-            uint8_t *row_start = color_p + row * row_size;
+//        // 填充颜色数组
+//        for (int i = 0; i < total_pixels; i++) {
+//            // 每两个字节组合成一个 uint16_t 颜色值
+//            colors[i] = ((uint16_t)color_p[2 * i] << 8) | color_p[2 * i + 1];
+//        }
 
-            LCD_CS_CLR();
-            LCD_RS_SET();
-            HAL_SPI_Transmit_DMA(&hspi1, row_start, row_size);
-            while (!dma_transfer_complete);  // 等待DMA传输完成
-            dma_transfer_complete = 0;
+        // 使用颜色数组来刷新整个区域
+        LCD_Clear_area_LVGL(area->x1, area->y1, area->x2, area->y2, color_p);
 
-            // 短暂的延时来帮助硬件处理数据
-            for (int i = 0; i < 100; i++) {
-                __NOP();  // NOP操作提供简短延时
-            }
+        // 释放分配的内存
+ //       free(colors);
 
-            LCD_CS_SET();  // 结束传输前确保CS设置为高
-        }
-
+        // 通知LVGL显示刷新已完成
+        lv_disp_flush_ready(disp_drv);
     }
-
-    lv_display_flush_ready(disp_drv);
 }
+
+
 
 
 

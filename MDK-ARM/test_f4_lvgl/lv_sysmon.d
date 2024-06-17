@@ -75,11 +75,3 @@ test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0
 test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../others/observer/../../core/lv_obj_event.h
 test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../others/observer/../../core/../indev/lv_indev.h
 test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../others/observer/../../core/../indev/../core/lv_group.h
-test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../core/lv_global.h
-test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../core/../draw/sw/lv_draw_sw.h
-test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../core/../draw/sw/../../draw/lv_draw_vector.h
-test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../core/../draw/sw/blend/lv_draw_sw_blend.h
-test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../core/../draw/sw/blend/../lv_draw_sw_mask.h
-test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../core/../stdlib/builtin/lv_tlsf.h
-test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../misc/lv_async.h
-test_f4_lvgl\lv_sysmon.o: C:/Users/tianr/AppData/Local/Arm/Packs/LVGL/lvgl/9.1.0/src/others/sysmon/../../widgets/label/lv_label.h

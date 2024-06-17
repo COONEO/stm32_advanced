@@ -289,9 +289,116 @@ void LCD_Clear(uint16_t Color)
         while (!dma_transfer_complete);  // 等待 DMA 传输完成
         dma_transfer_complete = 0;       // 重置 DMA 完成标志
     }
+    
+
 
     LCD_CS_SET();  // 传输完成后设置片选信号，结束通信
 }
+
+void LCD_Clear_erea(int x1,int y1, int x2,int y2  ,uint16_t Color)
+{
+    unsigned int i, m;  
+    
+    
+    int width = x2 - x1 + 1;   // 计算区域宽度
+    int height = y2 - y1 + 1;  // 计算区域高度
+    
+    LCD_SetWindows(x1, y1, x2, y2);  // 设置需要刷新的窗口
+    LCD_CS_CLR();  // 清除片选信号，开始通信
+    LCD_RS_SET();  // 设置数据/命令标志位为数据
+
+    // 预处理整行的颜色数据，适配 uint16_t 颜色到 uint8_t 传输格式
+    for (m = 0; m < width; m++) {
+        int index = m * 4;  // 每个像素占用4个uint8_t位置
+        lineBuffer[index] = (Color >> 8) & 0xFF;    // 高字节
+        lineBuffer[index + 1] = Color & 0xFF;       // 低字节
+        lineBuffer[index + 2] = (Color >> 8) & 0xFF; // 高字节，重复
+        lineBuffer[index + 3] = Color & 0xFF;       // 低字节，重复
+    }
+
+    // 对于每行，发送完整行数据
+    for (i = 0; i < height; i++) {
+        HAL_SPI_Transmit_DMA(&hspi1, lineBuffer, width * 2); // 发送整行数据，驱动两次确保生效
+        while (!dma_transfer_complete);  // 等待 DMA 传输完成
+        dma_transfer_complete = 0;       // 重置 DMA 完成标志
+    }
+
+    LCD_CS_SET();  // 传输完成后设置片选信号，结束通信
+}
+
+//void LCD_Clear_area_LVGL(int x1, int y1, int x2, int y2, uint8_t* Colors){
+//    unsigned int i, m;
+//    int width = x2 - x1 + 1;   // 计算区域宽度
+//    int height = y2 - y1 + 1;  // 计算区域高度
+
+//    LCD_SetWindows(x1, y1, x2, y2);  // 设置需要刷新的窗口
+//    LCD_CS_CLR();  // 清除片选信号，开始通信
+//    LCD_RS_SET();  // 设置数据/命令标志位为数据
+
+//    // 对于每行，处理并发送整行数据
+//    for (i = 0; i < height; i++) {
+//        uint8_t* lineBuffer = (uint8_t*)malloc(width * 4);
+//        if (lineBuffer == NULL) {
+//            continue;  // 如果内存分配失败，跳过当前行
+//        }
+
+//        for (m = 0; m < width; m++) {
+//            int index = m * 4;  // 每个像素占用2个uint8_t位置
+//            lineBuffer[index] = (Colors[i + m] >> 8) & 0xFF;    // 高字节
+//            lineBuffer[index + 1] = Colors[i  + m] & 0xFF;       // 低字节
+//            lineBuffer[index + 2] = (Colors[i  + m] >> 8) & 0xFF;    // 高字节
+//            lineBuffer[index + 3] = Colors[i  + m] & 0xFF;       // 低字节
+//        }
+
+//        HAL_SPI_Transmit_DMA(&hspi1, lineBuffer, width * 2); // 发送整行数据
+//        while (!dma_transfer_complete);  // 等待 DMA 传输完成
+//        dma_transfer_complete = 0;       // 重置 DMA 完成标志
+
+//        free(lineBuffer);  // 释放当前行的缓冲区
+//    }
+
+//    LCD_CS_SET();  // 传输完成后设置片选信号，结束通信
+//}
+
+void LCD_Clear_area_LVGL(int x1, int y1, int x2, int y2, uint8_t* Colors) {
+    unsigned int i, m;
+    int width = x2 - x1 + 1;   // Calculate the width of the area
+    int height = y2 - y1 + 1;  // Calculate the height of the area
+
+    LCD_SetWindows(x1, y1, x2, y2);  // Set the window to refresh
+    LCD_CS_CLR();  // Clear the chip select signal to start communication
+    LCD_RS_SET();  // Set the register select to data
+
+    // For each row, process and send the entire row of data
+    for (i = 0; i < height; i++) {
+        uint8_t* lineBuffer = (uint8_t*)malloc(width * 4);
+        if (lineBuffer == NULL) {
+            continue;  // If memory allocation fails, skip the current row
+        }
+
+        for (m = 0; m < width; m++) {
+            uint16_t color = ((uint16_t*)Colors)[i * width + m]; // Correct indexing into the color array
+            int index = m * 4;  // Each pixel occupies 4 uint8_t positions (for RGB redundancy)
+            lineBuffer[index] = (color >> 8) & 0xFF;    // High byte
+            lineBuffer[index + 1] = color & 0xFF;       // Low byte
+            lineBuffer[index + 2] = (color >> 8) & 0xFF; // High byte repeated
+            lineBuffer[index + 3] = color & 0xFF;       // Low byte repeated
+        }
+
+        HAL_SPI_Transmit_DMA(&hspi1, lineBuffer, width * 2); // Send the entire row of data
+        while (!dma_transfer_complete);  // Wait for DMA transfer to complete
+        dma_transfer_complete = 0;       // Reset the DMA completion flag
+
+        free(lineBuffer);  // Free the current row buffer
+    }
+
+    LCD_CS_SET();  // Set the chip select signal to end communication
+}
+
+
+
+
+
 
 //uint8_t lineBuffer[128 * 2];  // 每个像素需要两个 uint8_t（即 uint16_t）
 

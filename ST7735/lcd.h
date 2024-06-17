@@ -56,6 +56,7 @@
 #include "main.h"	 
 #include "spi.h"
 #include "stdlib.h"
+#include "lvgl.h"
 
 typedef uint32_t  u32;
 typedef uint16_t u16;
@@ -75,6 +76,8 @@ typedef struct
   u8   xoffset;    
   u8	 yoffset;
 }_lcd_dev; 	
+
+
 
 //LCD参数
 extern _lcd_dev lcddev;	//管理LCD重要参数
@@ -180,6 +183,11 @@ u16 LCD_BGR2RGB(u16 c);
 void LCD_SetParam(void);
 void Lcd_WriteData_16Bit(u16 Data);
 void LCD_direction(u8 direction );
+
+//void LCD_Clear_erea(lv_area_t * area ,uint16_t Color);
+void LCD_Clear_erea(int x1,int y1, int z2,int y2  ,uint16_t Color);
+void LCD_SendColorBuffer(const lv_area_t * area, uint16_t *color_buffer, int total_pixels);
+void LCD_Clear_area_LVGL(int x1, int y1, int x2, int y2, uint8_t* Colors);
 
 //如果仍然觉得速度不够快，可以使用下面的宏定义,提高速度.
 //注意要去掉lcd.c中void LCD_WR_DATA(u16 data)函数定义哦

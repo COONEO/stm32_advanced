@@ -173,6 +173,8 @@ void MX_FREERTOS_Init(void) {
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */
+int x1,x2,y1,y2;
+uint16_t CColor;
 
 /**
   * @brief  Function implementing the defaultTask thread.
@@ -184,39 +186,38 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
     LCD_Init();
-    HAL_Delay(500);
-    LCD_Clear(GREEN);
-        HAL_Delay(500);
-    LCD_Clear(GRAY0);
-     menu_test();
-    HAL_Delay(500);
-    LCD_Clear(GREEN);
-    HAL_Delay(500);
-//    lv_init();
-//    lv_port_disp_init();
-//    
+//    HAL_Delay(500);
+//    LCD_Clear(GREEN);
+//        HAL_Delay(500);
+//    LCD_Clear(GRAY0);
+//    // menu_test();
+//    HAL_Delay(500);
+//    LCD_Clear(GREEN);
+//    HAL_Delay(500);
+    lv_init();           // Initialize the LittlevGL library
+    lv_port_disp_init(); // Initialize the display port for LittlevGL
 
-//    /* Change the active screen's background color */
-//    lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x003a57), LV_PART_MAIN);
+    /* Change the active screen's background color */
+    lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x003a57), LV_PART_MAIN);
 
-//    /* Create a label */
-//    lv_obj_t * label = lv_label_create(lv_scr_act());
-//    lv_label_set_text(label, "Hello world");
-//    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
-//    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+    /* Create a label on the screen */
+    lv_obj_t *label = lv_label_create(lv_scr_act());
+    lv_label_set_text(label, "Hello world"); // Set label text
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0); // Center the label
 
-//    /* Create an animation for label */
-//    lv_anim_t a;
-//    lv_anim_init(&a);
-//    lv_anim_set_var(&a, label);
-//    lv_anim_set_values(&a, lv_obj_get_x(label) - 50, lv_obj_get_x(label) + 50);  // Move left and right 50 pixels from center
-//    lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)lv_obj_set_x);
-//    lv_anim_set_time(&a, 2000);                     // 动画时长2000毫秒
-//    lv_anim_set_playback_delay(&a, 100);            // 播放延迟100毫秒
-//    lv_anim_set_playback_time(&a, 2000);            // 播放时间2000毫秒
-//    lv_anim_set_repeat_delay(&a, 500);              // 重复延迟500毫秒
-//    lv_anim_set_repeat_count(&a, LV_ANIM_REPEAT_INFINITE);  // 无限重复
-//    lv_anim_start(&a);                              // 开始动画
+    /* Create and start an animation for the label */
+    lv_anim_t a;
+    lv_anim_init(&a);
+    lv_anim_set_var(&a, label);
+    lv_anim_set_values(&a, lv_obj_get_x(label) - 50, lv_obj_get_x(label) + 50); // Move label left and right 50 pixels from center
+    lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)lv_obj_set_x); // Callback to update the label's position
+    lv_anim_set_time(&a, 2000);  // Animation duration 2000 milliseconds
+    lv_anim_set_playback_delay(&a, 100); // Playback delay 100 milliseconds
+    lv_anim_set_playback_time(&a, 2000); // Playback time 2000 milliseconds
+    lv_anim_set_repeat_delay(&a, 500);   // Repeat delay 500 milliseconds
+    lv_anim_set_repeat_count(&a, LV_ANIM_REPEAT_INFINITE); // Repeat infinitely
+    lv_anim_start(&a); // Start the animation
 
  //   lv_demo_widgets();
 
@@ -225,16 +226,23 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
+      
+//      LCD_Clear_erea(x1,y1,x2,y2 ,CColor);
+      
+//      #define GBLUE			 	0X07FF
+//#define RED         0xF800
+//#define MAGENTA     0xF81F
+//#define GREEN       0x07E0
 //      menu_test();
 //          osDelay(500);
 //    LCD_Clear(BLUE);
-        osDelay(500);
-    LCD_Clear(RED);
-              osDelay(500);
-    LCD_Clear(GREEN);
+//        osDelay(500);
+//    LCD_Clear(RED);
+//              osDelay(500);
+//    LCD_Clear(GREEN);
 //      
 //      lv_timer_periodic_handler();
-      
+      lv_timer_periodic_handler();
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
@@ -253,7 +261,7 @@ void StartTask02(void *argument)
   /* Infinite loop */
   for(;;)
   {
-          lv_timer_periodic_handler();
+          //lv_timer_periodic_handler();
     osDelay(5);
   }
   /* USER CODE END StartTask02 */
