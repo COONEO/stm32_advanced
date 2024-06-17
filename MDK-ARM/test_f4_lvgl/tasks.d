@@ -1,4 +1,7 @@
 test_f4_lvgl\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
+test_f4_lvgl\tasks.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\tasks.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\tasks.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\tasks.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h
 test_f4_lvgl\tasks.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 test_f4_lvgl\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h

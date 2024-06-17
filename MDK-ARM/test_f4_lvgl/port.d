@@ -1,4 +1,7 @@
 test_f4_lvgl\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/port.c
+test_f4_lvgl\port.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\port.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\port.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 test_f4_lvgl\port.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 test_f4_lvgl\port.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h

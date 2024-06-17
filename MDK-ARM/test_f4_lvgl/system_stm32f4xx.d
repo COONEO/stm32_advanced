@@ -1,4 +1,7 @@
 test_f4_lvgl\system_stm32f4xx.o: ../Core/Src/system_stm32f4xx.c
+test_f4_lvgl\system_stm32f4xx.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\system_stm32f4xx.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\system_stm32f4xx.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\system_stm32f4xx.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 test_f4_lvgl\system_stm32f4xx.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 test_f4_lvgl\system_stm32f4xx.o: ../Drivers/CMSIS/Include/core_cm4.h

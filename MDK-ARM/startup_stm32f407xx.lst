@@ -849,12 +849,13 @@ interwork --depend=test_f4_lvgl\startup_stm32f407xx.d -otest_f4_lvgl\startup_st
 ARM Macro Assembler    Page 14 
 
 
-m32f407xx.o -I../Core/Inc -I.\RTE\_test_f4_lvgl -IC:\Users\tianr\AppData\Local\
-Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\Users\tianr\AppData\Local\Arm
-\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include --pr
-edefine="__UVISION_VERSION SETA 538" --predefine="_RTE_ SETA 1" --predefine="ST
-M32F407xx SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm32f407xx.lst sta
-rtup_stm32f407xx.s
+m32f407xx.o -I../Core/Inc -I.\RTE\LVGL -I.\RTE\_test_f4_lvgl -IC:\Users\tianr\A
+ppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\Users\tianr\AppD
+ata\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx
+\Include -IC:\Users\tianr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0 -IC:\Users\ti
+anr\AppData\Local\Arm\Packs\LVGL\lvgl\9.1.0\src\core --predefine="__UVISION_VER
+SION SETA 538" --predefine="_RTE_ SETA 1" --predefine="STM32F407xx SETA 1" --pr
+edefine="_RTE_ SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407xx.s
 
 
 

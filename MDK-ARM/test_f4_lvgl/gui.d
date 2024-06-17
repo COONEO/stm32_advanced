@@ -1,4 +1,7 @@
 test_f4_lvgl\gui.o: ..\ST7735\GUI.c
+test_f4_lvgl\gui.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\gui.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\gui.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\gui.o: ..\ST7735\lcd.h
 test_f4_lvgl\gui.o: ../Core/Inc/main.h
 test_f4_lvgl\gui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h

@@ -18,6 +18,8 @@
 #include "my_include.h"
 #endif
 
+#define MY_DISP_HOR_RES 128
+#define MY_DISP_VER_RES 128
 /*====================
    COLOR SETTINGS
  *====================*/
@@ -43,8 +45,8 @@
 
 #if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
     /*Size of the memory available for `lv_malloc()` in bytes (>= 2kB)*/
-    #define LV_MEM_SIZE (128 * 1024U)          /*[bytes]*/
-
+//    #define LV_MEM_SIZE (128 * 1024U)          /*[bytes]*/
+    #define LV_MEM_SIZE (48 * 1024U)          /*[bytes]*/
     /*Size of the memory expand for `lv_malloc()` in bytes*/
     #define LV_MEM_POOL_EXPAND_SIZE 0
 
@@ -102,7 +104,7 @@
  * and can't be drawn in chunks. */
 
 /*The target buffer size for simple layer chunks.*/
-#define LV_DRAW_LAYER_SIMPLE_BUF_SIZE    (24 * 1024)   /*[bytes]*/
+#define LV_DRAW_LAYER_SIMPLE_BUF_SIZE    (36 * 1024)   /*[bytes]*/
 
 #define LV_USE_DRAW_SW 1
 #if LV_USE_DRAW_SW == 1
@@ -703,13 +705,14 @@
  *==================*/
 
 /*1: Enable system monitor component*/
-#define LV_USE_SYSMON   0
+#define LV_USE_SYSMON   1 //0
 
 #if LV_USE_SYSMON
 
     /*1: Show CPU usage and FPS count
      * Requires `LV_USE_SYSMON = 1`*/
-    #define LV_USE_PERF_MONITOR 0
+    #define LV_USE_PERF_MONITOR 1 //0
+
     #if LV_USE_PERF_MONITOR
         #define LV_USE_PERF_MONITOR_POS LV_ALIGN_BOTTOM_RIGHT
 

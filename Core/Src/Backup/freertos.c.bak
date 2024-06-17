@@ -25,7 +25,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "lcd.h"
+#include "test.h"
+#include "lvgl.h"
+#include "lv_port_disp_template.h"
+#include "demos/lv_demos.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -178,9 +182,52 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+    LCD_Init();
+    HAL_Delay(500);
+    LCD_Clear(GREEN);
+        HAL_Delay(500);
+    LCD_Clear(GRAY0);
+    
+    lv_init();
+    lv_port_disp_init();
+    
+
+    /* Change the active screen's background color */
+    lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x003a57), LV_PART_MAIN);
+
+    /* Create a label */
+    lv_obj_t * label = lv_label_create(lv_scr_act());
+    lv_label_set_text(label, "Hello world");
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+
+    /* Create an animation for label */
+    lv_anim_t a;
+    lv_anim_init(&a);
+    lv_anim_set_var(&a, label);
+    lv_anim_set_values(&a, lv_obj_get_x(label) - 50, lv_obj_get_x(label) + 50);  // Move left and right 50 pixels from center
+    lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)lv_obj_set_x);
+    lv_anim_set_time(&a, 2000);                     // 动画时长2000毫秒
+    lv_anim_set_playback_delay(&a, 100);            // 播放延迟100毫秒
+    lv_anim_set_playback_time(&a, 2000);            // 播放时间2000毫秒
+    lv_anim_set_repeat_delay(&a, 500);              // 重复延迟500毫秒
+    lv_anim_set_repeat_count(&a, LV_ANIM_REPEAT_INFINITE);  // 无限重复
+    lv_anim_start(&a);                              // 开始动画
+
+//    lv_demo_widgets();
+    //lv_demo_benchmark();
+    
   /* Infinite loop */
   for(;;)
   {
+//      menu_test();
+//          osDelay(2000);
+//    LCD_Clear(BLUE);
+//        osDelay(2000);
+//    LCD_Clear(GRAY0);
+//      
+//      lv_timer_periodic_handler();
+      
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
@@ -199,7 +246,8 @@ void StartTask02(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+          lv_timer_periodic_handler();
+    osDelay(5);
   }
   /* USER CODE END StartTask02 */
 }

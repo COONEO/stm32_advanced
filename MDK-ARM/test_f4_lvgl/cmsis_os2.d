@@ -1,4 +1,7 @@
 test_f4_lvgl\cmsis_os2.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c
+test_f4_lvgl\cmsis_os2.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\cmsis_os2.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\cmsis_os2.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\cmsis_os2.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 test_f4_lvgl\cmsis_os2.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 test_f4_lvgl\cmsis_os2.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h

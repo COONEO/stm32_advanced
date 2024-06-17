@@ -97,6 +97,25 @@ void LCD_WR_DATA(u8 data)
    //LCD_CS_SET();
 }
 
+//void LCD_WR_REG(u8 data)
+//{ 
+//   LCD_CS_CLR();     
+//   LCD_RS_CLR();  // 命令模式
+//   uint8_t dataBuffer[2] = {0x00, data};  // 命令字节前需要一个0字节作为前缀
+//   HAL_SPI_Transmit_DMA(&hspi1, dataBuffer, 2);
+//   // LCD_CS_SET();  // 不在这里设置CS高，由DMA完成回调来处理
+//}
+
+//// 该函数用于发送数据到LCD
+//void LCD_WR_DATA(u8 data)
+//{
+//   LCD_CS_CLR();
+//   LCD_RS_SET();  // 数据模式
+//   uint8_t dataBuffer[2] = {0x00, data};  // 数据字节前需要一个0字节作为前缀
+//   HAL_SPI_Transmit_DMA(&hspi1, dataBuffer, 2);
+//   // LCD_CS_SET();  // 不在这里设置CS高，由DMA完成回调来处理
+//}
+
 /*****************************************************************************
  * @name       :void LCD_WriteReg(u8 LCD_Reg, u16 LCD_RegValue)
  * @date       :2018-08-09 
@@ -158,6 +177,8 @@ void Lcd_WriteData_16Bit(uint16_t Data)
     // LCD_CS_SET();  // 这一行应该移到DMA传输完成中断中
 }
 
+
+
 /*****************************************************************************
  * @name       :void LCD_DrawPoint(u16 x,u16 y)
  * @date       :2018-08-09 
@@ -172,6 +193,13 @@ void LCD_DrawPoint(u16 x,u16 y)
 	Lcd_WriteData_16Bit(POINT_COLOR); 
 }
 
+void LCD_DrawPoint_color(u16 x, u16 y, u16 color)
+{
+    LCD_SetCursor(x, y); // 设置光标位置
+    Lcd_WriteData_16Bit(color); // 写入颜色数据
+}
+
+
 /*****************************************************************************
  * @name       :void LCD_Clear(u16 Color)
  * @date       :2018-08-09 
@@ -179,21 +207,120 @@ void LCD_DrawPoint(u16 x,u16 y)
  * @parameters :color:Filled color
  * @retvalue   :None
 ******************************************************************************/	
-void LCD_Clear(u16 Color)
+volatile uint32_t dma_transfer_complete = 1;  // 1表示传输完成
+// void LCD_Clear(u16 Color)
+//{
+//  unsigned int i,m;  
+//	LCD_SetWindows(0,0,lcddev.width-1,lcddev.height-1);   
+//	LCD_CS_CLR();
+//	LCD_RS_SET();
+//	for(i=0;i<lcddev.height;i++)
+//	{
+//        for(m=0;m<lcddev.width;m++)
+//        {	
+//          
+//            uint8_t dataBuffer[2];  // 用于存放两个字节的缓冲区
+
+//            LCD_CS_CLR();  // 片选信号拉低，选择设备
+//            LCD_RS_SET();  // 数据寄存器选中
+
+//            // 分解16位数据到两个字节
+//            dataBuffer[0] = (Color >> 8) & 0xFF;  // 高字节
+//            dataBuffer[1] = Color & 0xFF;         // 低字节
+
+//            // 发送两个字节的数据
+//            HAL_SPI_Transmit_DMA(&hspi1, dataBuffer, 2);
+//		}
+//	}
+//    
+
+//	 //LCD_CS_SET();
+//} 
+
+//uint8_t lineBuffer[128 * 2 * 2];  // 每个像素两个字节
+//void LCD_Clear(u16 Color)
+//{
+//    unsigned int i, m;  
+//    LCD_SetWindows(0, 0, lcddev.width-1, lcddev.height-1);   
+//    LCD_CS_CLR();
+//    LCD_RS_SET();
+
+//    // 预处理整行的颜色数据，但只填充半行
+//    for (m = 0; m < lcddev.width * 2; m++)
+//    {
+//        int index = m * 2;
+//        lineBuffer[index] = (Color >> 8) & 0xFF;  // 高字节
+//        lineBuffer[index + 1] = Color & 0xFF;     // 低字节
+//    }
+
+//    // 对于每行，分两次传输
+//    for (i = 0; i < lcddev.height; i++)
+//    {
+//        
+//        HAL_SPI_Transmit_DMA(&hspi1, lineBuffer, lcddev.width * 2);  // 传输半行
+//        while (!dma_transfer_complete);  // 等待 DMA 传输完成
+//        dma_transfer_complete = 0;       // 重置 DMA 完成标志
+//    }
+
+//    LCD_CS_SET();  // 只在最后设置片选信号
+//}
+
+uint8_t lineBuffer[128 * 2 * 2];  // 每个像素需要两个 uint8_t（即 uint16_t），总共发送两倍数据量
+
+void LCD_Clear(uint16_t Color)
 {
-  unsigned int i,m;  
-	LCD_SetWindows(0,0,lcddev.width-1,lcddev.height-1);   
-	LCD_CS_CLR();
-	LCD_RS_SET();
-	for(i=0;i<lcddev.height;i++)
-	{
-    for(m=0;m<lcddev.width;m++)
-    {	
-			Lcd_WriteData_16Bit(Color);
-		}
-	}
-	 //LCD_CS_SET();
-} 
+    unsigned int i, m;  
+    LCD_SetWindows(0, 0, 128 - 1, 128 - 1);  // 设置需要刷新的窗口
+    LCD_CS_CLR();  // 清除片选信号，开始通信
+    LCD_RS_SET();  // 设置数据/命令标志位为数据
+
+    // 预处理整行的颜色数据，适配 uint16_t 颜色到 uint8_t 传输格式
+    for (m = 0; m < 128; m++) {
+        int index = m * 4;  // 每个像素占用4个uint8_t位置
+        lineBuffer[index] = (Color >> 8) & 0xFF;    // 高字节
+        lineBuffer[index + 1] = Color & 0xFF;       // 低字节
+        lineBuffer[index + 2] = (Color >> 8) & 0xFF; // 高字节，重复
+        lineBuffer[index + 3] = Color & 0xFF;       // 低字节，重复
+    }
+
+    // 对于每行，发送完整行数据
+    for (i = 0; i < 128; i++) {
+        HAL_SPI_Transmit_DMA(&hspi1, lineBuffer, 128 * 2); // 发送整行数据，驱动两次确保生效
+        while (!dma_transfer_complete);  // 等待 DMA 传输完成
+        dma_transfer_complete = 0;       // 重置 DMA 完成标志
+    }
+
+    LCD_CS_SET();  // 传输完成后设置片选信号，结束通信
+}
+
+//uint8_t lineBuffer[128 * 2];  // 每个像素需要两个 uint8_t（即 uint16_t）
+
+//void LCD_Clear(uint16_t Color)
+//{
+//    unsigned int i, m;  
+//    LCD_SetWindows(0, 0, lcddev.width - 1, lcddev.height - 1);  // 设置需要刷新的窗口
+//    LCD_CS_CLR();  // 清除片选信号，开始通信
+//    LCD_RS_SET();  // 设置数据/命令标志位为数据
+
+//    // 预处理整行的颜色数据，适配 uint16_t 颜色到 uint8_t 传输格式
+//    for (m = 0; m < lcddev.width; m++) {
+//        int index = m * 2;  // 每个像素占用2个uint8_t位置
+//        lineBuffer[index] = (Color >> 8) & 0xFF;    // 高字节
+//        lineBuffer[index + 1] = Color & 0xFF;       // 低字节
+//    }
+
+//    // 对于每行，发送完整行数据
+//    for (i = 0; i < lcddev.height; i++) {
+//        HAL_SPI_Transmit_DMA(&hspi1, lineBuffer, lcddev.width * 2); // 发送整行数据，总长度为 lcddev.width * 2 字节
+//        while (!dma_transfer_complete);  // 等待 DMA 传输完成
+//        dma_transfer_complete = 0;       // 重置 DMA 完成标志
+//    }
+
+//    LCD_CS_SET();  // 传输完成后设置片选信号，结束通信
+//}
+
+
+
 
 /*****************************************************************************
  * @name       :void LCD_Clear(u16 Color)
@@ -431,11 +558,13 @@ void LCD_direction(u8 direction)
 	}		
 }	 
 
-
+//volatile uint32_t dma_transfer_complete = 1;
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 {
-    if (hspi->Instance == SPI1)
-    {
-        LCD_CS_SET();  // 在数据传输完成后，片选信号置高
+    if (hspi->Instance == SPI1) {
+        //LCD_CS_SET();  // 在数据传输完成后，片选信号置高
+        dma_transfer_complete = 1;  // 标记DMA传输完成
     }
 }
+
+

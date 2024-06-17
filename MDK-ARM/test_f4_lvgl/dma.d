@@ -1,4 +1,7 @@
 test_f4_lvgl\dma.o: ../Core/Src/dma.c
+test_f4_lvgl\dma.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\dma.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\dma.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\dma.o: ../Core/Inc/dma.h
 test_f4_lvgl\dma.o: ../Core/Inc/main.h
 test_f4_lvgl\dma.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h

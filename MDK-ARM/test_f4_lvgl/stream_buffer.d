@@ -1,4 +1,7 @@
 test_f4_lvgl\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c
+test_f4_lvgl\stream_buffer.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\stream_buffer.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\stream_buffer.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\stream_buffer.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 test_f4_lvgl\stream_buffer.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
 test_f4_lvgl\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h

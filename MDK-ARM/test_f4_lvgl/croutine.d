@@ -1,4 +1,7 @@
 test_f4_lvgl\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
+test_f4_lvgl\croutine.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\croutine.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\croutine.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 test_f4_lvgl\croutine.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
 test_f4_lvgl\croutine.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h

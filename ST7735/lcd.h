@@ -61,6 +61,7 @@ typedef uint32_t  u32;
 typedef uint16_t u16;
 typedef uint8_t  u8;
 
+extern volatile uint32_t dma_transfer_complete;
 //LCD重要参数集
 typedef struct  
 {										    
@@ -162,6 +163,7 @@ void LCD_DisplayOff(void);
 void LCD_Clear(u16 Color);	 
 void LCD_SetCursor(u16 Xpos, u16 Ypos);
 void LCD_DrawPoint(u16 x,u16 y);//画点
+void LCD_DrawPoint_color(u16 x, u16 y, u16 color);
 u16  LCD_ReadPoint(u16 x,u16 y); //读点
 void LCD_DrawLine(u16 x1, u16 y1, u16 x2, u16 y2);
 void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2);		   

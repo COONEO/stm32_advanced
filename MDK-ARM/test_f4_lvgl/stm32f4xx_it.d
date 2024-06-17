@@ -1,4 +1,7 @@
 test_f4_lvgl\stm32f4xx_it.o: ../Core/Src/stm32f4xx_it.c
+test_f4_lvgl\stm32f4xx_it.o: ./RTE/LVGL/lv_conf_cmsis.h
+test_f4_lvgl\stm32f4xx_it.o: .\RTE\_test_f4_lvgl\RTE_Components.h
+test_f4_lvgl\stm32f4xx_it.o: .\RTE\_test_f4_lvgl\Pre_Include_Global.h
 test_f4_lvgl\stm32f4xx_it.o: ../Core/Inc/main.h
 test_f4_lvgl\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 test_f4_lvgl\stm32f4xx_it.o: ../Core/Inc/stm32f4xx_hal_conf.h
