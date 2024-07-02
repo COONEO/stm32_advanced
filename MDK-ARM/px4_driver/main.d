@@ -27,3 +27,8 @@ px4_driver\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 px4_driver\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 px4_driver\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 px4_driver\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
+px4_driver\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+px4_driver\main.o: ../Core/Inc/tim.h
+px4_driver\main.o: ../Core/Inc/usart.h
+px4_driver\main.o: ../Core/Inc/gpio.h
+px4_driver\main.o: ../CUS/step_motor/step_motor.h

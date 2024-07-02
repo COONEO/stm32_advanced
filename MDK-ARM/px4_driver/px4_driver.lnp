@@ -1,6 +1,9 @@
 --cpu Cortex-M3
 "px4_driver\startup_stm32f103xb.o"
 "px4_driver\main.o"
+"px4_driver\gpio.o"
+"px4_driver\tim.o"
+"px4_driver\usart.o"
 "px4_driver\stm32f1xx_it.o"
 "px4_driver\stm32f1xx_hal_msp.o"
 "px4_driver\stm32f1xx_hal_gpio_ex.o"
@@ -16,7 +19,9 @@
 "px4_driver\stm32f1xx_hal_flash.o"
 "px4_driver\stm32f1xx_hal_flash_ex.o"
 "px4_driver\stm32f1xx_hal_exti.o"
+"px4_driver\stm32f1xx_hal_uart.o"
 "px4_driver\system_stm32f1xx.o"
+"px4_driver\step_motor.o"
 --strict --scatter "px4_driver\px4_driver.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
