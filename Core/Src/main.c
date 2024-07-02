@@ -95,8 +95,11 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  
-  MX_TIM1_PA8_Init();  // comment MX_TIM1_Init
+// tttt = 0
+//  MX_TIM1_PA8_Init(); 
+tttt =1;
+MX_TIM1_PA9_Init();  // comment MX_TIM1_Init
+
 HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_1);
 HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_2);
 
@@ -190,19 +193,34 @@ float PWM2_Duty, PWM2_Frequency;
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
-    if(htim->Instance == TIM1)
+    if(htim->Instance == TIM1 & tttt==0)
     {
-            if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
-            {
-                PWM1_T_Count = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1) + 1; // 捕获周期
-                PWM1_Duty = (float)PWM1_D_Count / PWM1_T_Count; // 计算占空比
-                PWM1_Frequency = 1000000.0f / PWM1_T_Count; // 计算频率（假设定时器时钟为1MHz）
-            }
-            else if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_2)
-            {
-                PWM1_D_Count = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2) + 1; // 捕获高电平时间
-            }
+        if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
+        {
+            PWM1_T_Count = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1) + 1; // 捕获周期
+            PWM1_Duty = (float)PWM1_D_Count / PWM1_T_Count; // 计算占空比
+            PWM1_Frequency = 1000000.0f / PWM1_T_Count; // 计算频率（假设定时器时钟为1MHz）
+        }
+        else if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_2)
+        {
+            PWM1_D_Count = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2) + 1; // 捕获高电平时间
+        }
     }
+    
+    if(htim->Instance == TIM1 && tttt== 1)
+    {
+        if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_2)  // 注意这里改为 CHANNEL_2
+        {
+            PWM1_T_Count = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2) + 1; // 捕获周期
+            PWM1_Duty = (float)PWM1_D_Count / PWM1_T_Count; // 计算占空比
+            PWM1_Frequency = 1000000.0f / PWM1_T_Count; // 计算频率（假设定时器时钟为1MHz）
+        }
+        else if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
+        {
+            PWM1_D_Count = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1) + 1; // 捕获高电平时间
+        }
+    }
+    
     if(htim->Instance == TIM3)
     {
             if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
@@ -216,6 +234,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
                 PWM2_D_Count = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2) + 1; // 捕获高电平时间
             }
     }
+    
+    
 }
 
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
